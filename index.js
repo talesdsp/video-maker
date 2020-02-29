@@ -4,10 +4,11 @@ const robots = {
 };
 
 async function start() {
-  const content = {};
+  const content = {
+    maximum_sentences: 7
+  };
   robots.userInput(content);
   await robots.text(content);
-  console.log(content);
 }
 
 start();

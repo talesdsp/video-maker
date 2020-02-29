@@ -1,7 +1,7 @@
 const readline = require("readline-sync");
 
 function robot(content) {
-  content.searchTerm = askAndReturnSearchTerm();
+  content.search_term = askAndReturnSearchTerm();
   content.prefix = askAndReturnPrefix();
 }
 
