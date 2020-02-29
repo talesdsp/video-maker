@@ -1,8 +1,14 @@
 const readline = require("readline-sync");
+const state = require("./state");
 
-function robot(content) {
-  content.search_term = askAndReturnSearchTerm();
-  content.prefix = askAndReturnPrefix();
+function robot() {
+  const content = {
+    maximum_sentences: 7,
+    search_term: askAndReturnSearchTerm(),
+    prefix: askAndReturnPrefix()
+  };
+
+  state.save(content);
 }
 
 function askAndReturnSearchTerm() {
