@@ -11,6 +11,7 @@ async function start() {
   await robots.images();
 
   const content = robots.state.load();
+  console.dir(content, {depth: null});
 }
 
 start();
