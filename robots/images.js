@@ -1,4 +1,5 @@
 const state = require("./state");
+const imageDownloader = require("image-downloader");
 const google = require("googleapis").google;
 const customSearch = google.customsearch("v1");
 
@@ -9,6 +10,7 @@ async function robot() {
 
   await fetchImagesOfAllSentences(content);
 
+  await downloadAllImages(content);
   state.save(content);
 }
 
@@ -33,4 +35,35 @@ async function fetchGoogleAndReturnImagesLinks(query) {
 
   return imagesUrl;
 }
+
+async function downloadAllImages(content) {
+  content.downloadedImages = [];
+
+  for (let i = 0; i < content.sentences.length; i++) {
+    const images = content.sentences[i].images;
+
+    for (let j = 0; j < images.length; j++) {
+      const imageUrl = images[j];
+      try {
+        if (content.downloadedImages.includes(imageUrl)) {
+          throw new Error("Image already exists");
+        }
+        await downloadAndSave(imageUrl, `${i}-original.png`);
+        content.downloadedImages.push(imageUrl);
+        console.log(`-> Download successfully [${i}][${j}] ${imageUrl}`);
+        break;
+      } catch (err) {
+        console.log(`-> Error on download [${i}][${j}] ${imageUrl}: ${err}`);
+      }
+    }
+  }
+}
+
+async function downloadAndSave(url, filename) {
+  imageDownloader.image({
+    url,
+    dest: `./content/${filename}`
+  });
+}
+
 module.exports = robot;

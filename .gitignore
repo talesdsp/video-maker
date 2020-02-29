@@ -1,4 +1,5 @@
 node_modules
 .git
 credentials/*.json
-content.json
+content/*.json
+content/*.png
